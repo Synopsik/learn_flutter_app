@@ -1,3 +1,11 @@
+// Plugin declaration is now declarative instead of imperative
+// Also must be above all other declarations
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -6,10 +14,13 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+// Removed deprecated imperative plugin declaration
+/*
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
+*/
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
@@ -21,12 +32,8 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34 // Pin ver. 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -66,6 +73,10 @@ flutter {
     source '../..'
 }
 
+// Per. https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply
+// - removed jetbrains kotlin dependency
+/*
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+*/
